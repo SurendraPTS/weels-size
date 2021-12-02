@@ -1,0 +1,2747 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "\nThe Wheel Fitment API allows for programmatic access to the database of www.wheel-size.com and its services.\nUse this API to retrieve information about vehicle fitment database for rims and tires, including OE and option fitments, and plus/minus sizing fitment information. A variety of country and language specific options are available. The coverage of fitment data for vehicles manufactured since 2000 is nearly 100%.\n\nThe information about fitment data is updated on a daily basis.",
+    "version" : "v2",
+    "title" : "Wheel Fitment API",
+    "termsOfService" : "https://www.wheel-size.com/privacy-policy/",
+    "contact" : {
+      "email" : "info@wheel-size.com"
+    }
+  },
+  "host" : "api.wheel-size.com",
+  "basePath" : "/v2",
+  "schemes" : [ "https" ],
+  "produces" : [ "application/json" ],
+  "security" : [ {
+    "user_key" : [ ]
+  } ],
+  "paths" : {
+    "/makes/" : {
+      "get" : {
+        "tags" : [ "Search By Model" ],
+        "summary" : "List manufacturers",
+        "description" : "\nReturns all manufacturers from the database\n\nAll *`array`* parameters can have multiple values. For example, `region=eudm&region=usdm`.\n",
+        "operationId" : "makes",
+        "parameters" : [ {
+          "name" : "year",
+          "in" : "query",
+          "description" : "You can use _**`GET /years/`**_ to get a list of available *`slug`* values. (e.g. `2015`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`slug`*",
+          "required" : false,
+          "type" : "string",
+          "default" : "slug",
+          "minLength" : 1
+        }, {
+          "name" : "lang",
+          "in" : "query",
+          "description" : "Use this parameter to get translations for the fields of the following objects: **`Make`**, **`Model`**, **`Region`**.\nThe field *`name_en`* always has the original English name. By default `en` language is used. \nCurrently, translation works in Сhinese (`zh-cn`) and Japanese (`ja`) languages only.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "brands",
+          "in" : "query",
+          "description" : "Provide data for selected car manufacturers.\nUse _**`GET /makes/`**_ method to get the full list. (e.g. `mitsubishi,nissan,toyota`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "brands_exclude",
+          "in" : "query",
+          "description" : "Exclude data for selected car manufacturers.\nUse _**`GET /makes/`**_ method to get the full list. (e.g. `geely,great-wall`)",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/MakesReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/models/" : {
+      "get" : {
+        "tags" : [ "Search By Model" ],
+        "summary" : "List models",
+        "description" : "\nReturns all models for the provided *`make`* parameter\n\nAll *`array`* parameters can have multiple values. For example, `region=eudm&region=usdm`.\n",
+        "operationId" : "models",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "year",
+          "in" : "query",
+          "description" : "You can use _**`GET /years/`**_ to get a list of available *`slug`* values. (e.g. `2015`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`slug`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        }, {
+          "name" : "lang",
+          "in" : "query",
+          "description" : "Use this parameter to get translations for the fields of the following objects: **`Make`**, **`Model`**, **`Region`**.\nThe field *`name_en`* always has the original English name. By default `en` language is used. \nCurrently, translation works in Сhinese (`zh-cn`) and Japanese (`ja`) languages only.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/ModelsReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/years/" : {
+      "get" : {
+        "tags" : [ "Search By Model" ],
+        "summary" : "List years",
+        "description" : "\nReturns all years for the provided *`make`* parameter\n\nAll *`array`* parameters can have multiple values. For example, `region=eudm&region=usdm`.\n",
+        "operationId" : "years",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `outlander`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`slug`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/YearsReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/generations/" : {
+      "get" : {
+        "tags" : [ "Search By Model" ],
+        "summary" : "List generations",
+        "description" : "\nReturns all generations for the provided *`make`* and *`model`* parameters\n\nAll *`array`* parameters can have multiple values. For example, `region=eudm&region=usdm`.\n",
+        "operationId" : "generations",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `outlander`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "outlander"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`start`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/GenerationsReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/modifications/" : {
+      "get" : {
+        "tags" : [ "Search By Model" ],
+        "summary" : "List modifications",
+        "description" : "\nReturns all modifications for the provided *`make`*, *`model`*, *`year`* or *`generation`* parameters.\nPlease note that you need to specify at least one of the following parameters: *`year`* or *`generation`*.\n\nAll *`array`* parameters can have multiple values. For example, `region=eudm&region=usdm`.\n",
+        "operationId" : "modifications",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `outlander`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "outlander"
+        }, {
+          "name" : "year",
+          "in" : "query",
+          "description" : "You can use _**`GET /years/`**_ to get a list of available *`slug`* values. (e.g. `2015`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "generation",
+          "in" : "query",
+          "description" : "Vehicle **`Generation`** refers to the life cycle of a design for a specific make and model.\nYou can use _**`GET /generations/`**_ to get a list of available *`slug`* values. (e.g. `gf-2015-2018`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`trim`*, *`start_year`*, *`end_year`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        }, {
+          "name" : "lang",
+          "in" : "query",
+          "description" : "Use this parameter to get translations for the fields of the following objects: **`Make`**, **`Model`**, **`Region`**.\nThe field *`name_en`* always has the original English name. By default `en` language is used. \nCurrently, translation works in Сhinese (`zh-cn`) and Japanese (`ja`) languages only.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/ModificationsReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/search/by_model/" : {
+      "get" : {
+        "tags" : [ "Search By Model" ],
+        "summary" : "Search by model",
+        "description" : "\nReturns all modifications for the provided *`make`*, *`model`*, *`year`*, *`generation`*, *`modification`* or *`region`* parameters.\nPlease note that the search query provides access to wheel fitment data.\n\nIn addition to the required parameters, there are restrictions on the combination of parameters.\nYou need to provide: \n1. *`make`* parameter;\n2. *`model`* parameter;\n3. at least one of the following parameters: *`year`* or *`generation`*;\n4. at least one of the following parameters: *`modification`* or *`region`*.\n",
+        "operationId" : "searchByModel",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `outlander`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "outlander"
+        }, {
+          "name" : "year",
+          "in" : "query",
+          "description" : "You can use _**`GET /years/`**_ to get a list of available *`slug`* values. (e.g. `2015`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "generation",
+          "in" : "query",
+          "description" : "Vehicle **`Generation`** refers to the life cycle of a design for a specific make and model.\nYou can use _**`GET /generations/`**_ to get a list of available *`slug`* values. (e.g. `gf-2015-2018`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "modification",
+          "in" : "query",
+          "description" : "Vehicle **`Modification`** is a variant of the engine of a car model, in some cases supplemented by the following parameters: drivetrain, body, transmission and country of production.\nYou can use _**`GET /modifications/`**_ to get a list of available *`slug`* values. (e.g. `30i-ddba5f`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`trim`*, *`start_year`*, *`end_year`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        }, {
+          "name" : "lang",
+          "in" : "query",
+          "description" : "Use this parameter to get translations for the fields of the following objects: **`Make`**, **`Model`**, **`Region`**.\nThe field *`name_en`* always has the original English name. By default `en` language is used. \nCurrently, translation works in Сhinese (`zh-cn`) and Japanese (`ja`) languages only.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByModelReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/rd/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "List rim diameters",
+        "description" : "Returns rim diameter values",
+        "operationId" : "diameters",
+        "parameters" : [ {
+          "name" : "bolt_pattern",
+          "in" : "query",
+          "description" : "**`Bolt pattern`** is expressed as the number of lugs by the diameter of an imaginary circle formed by the centers of the wheel lugs.\nYou can use _**`GET /by_rim/bp/`**_ to get a list of available *`value`* values. (e.g. `5x114.3`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/DiameterReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/rw/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "List rim widths",
+        "description" : "Returns rim width values",
+        "operationId" : "widths",
+        "parameters" : [ {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_rim/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "bolt_pattern",
+          "in" : "query",
+          "description" : "**`Bolt pattern`** is expressed as the number of lugs by the diameter of an imaginary circle formed by the centers of the wheel lugs.\nYou can use _**`GET /by_rim/bp/`**_ to get a list of available *`value`* values. (e.g. `5x114.3`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/WidthReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/of/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "List rim offsets",
+        "description" : "Returns rim offset values",
+        "operationId" : "offsets",
+        "parameters" : [ {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_rim/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "rim_width",
+          "in" : "query",
+          "description" : "Rim **`width`** is the distance measured in inches from bead seat to bead seat.\nYou can use _**`GET /by_rim/rw/`**_ to get a list of available *`value`* values. (e.g. `7.5`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "bolt_pattern",
+          "in" : "query",
+          "description" : "**`Bolt pattern`** is expressed as the number of lugs by the diameter of an imaginary circle formed by the centers of the wheel lugs.\nYou can use _**`GET /by_rim/bp/`**_ to get a list of available *`value`* values. (e.g. `5x114.3`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/OffsetReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/cb/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "List rim centre bores",
+        "description" : "Returns rim centre bore values",
+        "operationId" : "centreBores",
+        "parameters" : [ {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_rim/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "rim_width",
+          "in" : "query",
+          "description" : "Rim **`width`** is the distance measured in inches from bead seat to bead seat.\nYou can use _**`GET /by_rim/rw/`**_ to get a list of available *`value`* values. (e.g. `7.5`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "rim_offset",
+          "in" : "query",
+          "description" : "Rim **`offset`** is a distance between wheel mounting surface where it is bolted to hub and the centerline of rim.\nYou can use _**`GET /by_rim/of/`**_ to get a list of available *`value`* values. (e.g. `38`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_min",
+          "in" : "query",
+          "description" : "Minimum rim offset value, mm. (e.g. `33`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_max",
+          "in" : "query",
+          "description" : "Maximum rim offset value, mm. (e.g. `43`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "bolt_pattern",
+          "in" : "query",
+          "description" : "**`Bolt pattern`** is expressed as the number of lugs by the diameter of an imaginary circle formed by the centers of the wheel lugs.\nYou can use _**`GET /by_rim/bp/`**_ to get a list of available *`value`* values. (e.g. `5x114.3`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/CentreBoreReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/bp/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "List rim bolt patterns",
+        "description" : "Returns rim bolt pattern values",
+        "operationId" : "boltPatterns",
+        "parameters" : [ {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_rim/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "rim_width",
+          "in" : "query",
+          "description" : "Rim **`width`** is the distance measured in inches from bead seat to bead seat.\nYou can use _**`GET /by_rim/rw/`**_ to get a list of available *`value`* values. (e.g. `7.5`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "rim_offset_min",
+          "in" : "query",
+          "description" : "Minimum rim offset value, mm. (e.g. `33`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_max",
+          "in" : "query",
+          "description" : "Maximum rim offset value, mm. (e.g. `43`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "cb_min",
+          "in" : "query",
+          "description" : "Minimum centre bore value, mm. (e.g. `60`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "cb_max",
+          "in" : "query",
+          "description" : "Maximum centre bore value, mm. (e.g. `75`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "stud_holes",
+          "in" : "query",
+          "description" : "**`Stud holes`** are the holes that the center cap covers, in which lug nuts go into to hold the wheel together. \nWheels can have __*`4`*__, __*`5`*__, __*`6`*__, or __*`8`*__ stud holes. (e.g. `5`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "pcd",
+          "in" : "query",
+          "description" : "Pitch circle diameter, mm (e.g. `115`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/BoltPatternReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/search/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "Search by rim",
+        "description" : "Returns a list of cars with the specified parameters.",
+        "operationId" : "searchByRim",
+        "parameters" : [ {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_rim/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 19.0
+        }, {
+          "name" : "rim_width",
+          "in" : "query",
+          "description" : "Rim **`width`** is the distance measured in inches from bead seat to bead seat.\nYou can use _**`GET /by_rim/rw/`**_ to get a list of available *`value`* values. (e.g. `7.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 7.5
+        }, {
+          "name" : "bolt_pattern",
+          "in" : "query",
+          "description" : "**`Bolt pattern`** is expressed as the number of lugs by the diameter of an imaginary circle formed by the centers of the wheel lugs.\nYou can use _**`GET /by_rim/bp/`**_ to get a list of available *`value`* values. (e.g. `5x114.3`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "5x114.3"
+        }, {
+          "name" : "rim_offset",
+          "in" : "query",
+          "description" : "Rim **`offset`** is a distance between wheel mounting surface where it is bolted to hub and the centerline of rim.\nYou can use _**`GET /by_rim/of/`**_ to get a list of available *`value`* values. (e.g. `38`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_min",
+          "in" : "query",
+          "description" : "Minimum rim offset value, mm. (e.g. `33`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_max",
+          "in" : "query",
+          "description" : "Maximum rim offset value, mm. (e.g. `43`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "cb",
+          "in" : "query",
+          "description" : "Centre bore value, mm (e.g. `60`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "cb_min",
+          "in" : "query",
+          "description" : "Minimum centre bore value, mm. (e.g. `60`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "cb_max",
+          "in" : "query",
+          "description" : "Maximum centre bore value, mm. (e.g. `75`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The **`Mode`** is used to set the search mode for data on the axes of wheelpairs.\nBy default, the search uses the axles of the front and rear wheelset.\n**`Mode`** possible values: __*`both`*__, __*`front_only`*__ or __*`rear_only`*__. (e.g. `both`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`make`*, *`model`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByRimCarReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_rim/search/modifications/" : {
+      "get" : {
+        "tags" : [ "Search By Rim" ],
+        "summary" : "Search by rim modifications",
+        "description" : "Returns detailed information about vehicle modifications with specified rim parameters.",
+        "operationId" : "searchByRimModifications",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `outlander`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "outlander"
+        }, {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_rim/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 19.0
+        }, {
+          "name" : "rim_width",
+          "in" : "query",
+          "description" : "Rim **`width`** is the distance measured in inches from bead seat to bead seat.\nYou can use _**`GET /by_rim/rw/`**_ to get a list of available *`value`* values. (e.g. `7.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 7.5
+        }, {
+          "name" : "bolt_pattern",
+          "in" : "query",
+          "description" : "**`Bolt pattern`** is expressed as the number of lugs by the diameter of an imaginary circle formed by the centers of the wheel lugs.\nYou can use _**`GET /by_rim/bp/`**_ to get a list of available *`value`* values. (e.g. `5x114.3`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "5x114.3"
+        }, {
+          "name" : "rim_offset",
+          "in" : "query",
+          "description" : "Rim **`offset`** is a distance between wheel mounting surface where it is bolted to hub and the centerline of rim.\nYou can use _**`GET /by_rim/of/`**_ to get a list of available *`value`* values. (e.g. `38`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_min",
+          "in" : "query",
+          "description" : "Minimum rim offset value, mm. (e.g. `33`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "rim_offset_max",
+          "in" : "query",
+          "description" : "Maximum rim offset value, mm. (e.g. `43`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "cb",
+          "in" : "query",
+          "description" : "Centre bore value, mm (e.g. `60`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "cb_min",
+          "in" : "query",
+          "description" : "Minimum centre bore value, mm. (e.g. `60`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "cb_max",
+          "in" : "query",
+          "description" : "Maximum centre bore value, mm. (e.g. `75`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The **`Mode`** is used to set the search mode for data on the axes of wheelpairs.\nBy default, the search uses the axles of the front and rear wheelset.\n**`Mode`** possible values: __*`both`*__, __*`front_only`*__ or __*`rear_only`*__. (e.g. `both`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`make`*, *`model`*, *`trim`*, *`start_year`*, *`end_year`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 50,
+          "maximum" : 100,
+          "minimum" : 0
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "minimum" : 0
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByRimModificationReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_hf_tire/od/" : {
+      "get" : {
+        "tags" : [ "Search By LT High Flotation Tire" ],
+        "summary" : "List overall diameters",
+        "description" : "\nReturns overall diameter values\n",
+        "operationId" : "hf_overallDiameters",
+        "parameters" : [ {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/OverallDiameterReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_hf_tire/sw/" : {
+      "get" : {
+        "tags" : [ "Search By LT High Flotation Tire" ],
+        "summary" : "List section widths (inches)",
+        "description" : "\nReturns section width values\n",
+        "operationId" : "hf_sectionWidths",
+        "parameters" : [ {
+          "name" : "overall_diameter",
+          "in" : "query",
+          "description" : "**`Overall diameter`** is the diameter of the inflated tire without any load, inches.\nYou can use _**`GET /by_hf_tire/od/`**_ to get a list of available *`value`* values. (e.g. `37`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SectionWidthReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_hf_tire/rd/" : {
+      "get" : {
+        "tags" : [ "Search By LT High Flotation Tire" ],
+        "summary" : "List rim diameters",
+        "description" : "\nReturns rim diameter values\n",
+        "operationId" : "hf_rimDiameters",
+        "parameters" : [ {
+          "name" : "overall_diameter",
+          "in" : "query",
+          "description" : "**`Overall diameter`** is the diameter of the inflated tire without any load, inches.\nYou can use _**`GET /by_hf_tire/od/`**_ to get a list of available *`value`* values. (e.g. `37`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in inches.\nYou can use _**`GET /by_hf_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `12.5`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/RimDiameterReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_hf_tire/search/" : {
+      "get" : {
+        "tags" : [ "Search By LT High Flotation Tire" ],
+        "summary" : "Search by LT High Flotation Tire",
+        "description" : "Returns a list of cars with the specified parameters.",
+        "operationId" : "hf_searchByTire",
+        "parameters" : [ {
+          "name" : "overall_diameter",
+          "in" : "query",
+          "description" : "**`Overall diameter`** is the diameter of the inflated tire without any load, inches.\nYou can use _**`GET /by_hf_tire/od/`**_ to get a list of available *`value`* values. (e.g. `37`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 37.0
+        }, {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in inches.\nYou can use _**`GET /by_hf_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `12.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 12.5
+        }, {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_hf_tire/rd/`**_ to get a list of available *`value`* values. (e.g. `16.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 16.5
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The **`Mode`** is used to set the search mode for data on the axes of wheelpairs.\nBy default, the search uses the axles of the front and rear wheelset.\n**`Mode`** possible values: __*`both`*__, __*`front_only`*__ or __*`rear_only`*__. (e.g. `both`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`make`*, *`model`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByHFTireCarReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_hf_tire/search/modifications/" : {
+      "get" : {
+        "tags" : [ "Search By LT High Flotation Tire" ],
+        "summary" : "Search by LT High Flotation Tire",
+        "description" : "Returns detailed information about vehicle modifications with specified rim parameters.",
+        "operationId" : "hf_searchByTireModifications",
+        "parameters" : [ {
+          "name" : "overall_diameter",
+          "in" : "query",
+          "description" : "**`Overall diameter`** is the diameter of the inflated tire without any load, inches.\nYou can use _**`GET /by_hf_tire/od/`**_ to get a list of available *`value`* values. (e.g. `37`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 37.0
+        }, {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in inches.\nYou can use _**`GET /by_hf_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `12.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 12.5
+        }, {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_hf_tire/rd/`**_ to get a list of available *`value`* values. (e.g. `16.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 16.5
+        }, {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `hummer`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "hummer"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `h1`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "h1"
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The **`Mode`** is used to set the search mode for data on the axes of wheelpairs.\nBy default, the search uses the axles of the front and rear wheelset.\n**`Mode`** possible values: __*`both`*__, __*`front_only`*__ or __*`rear_only`*__. (e.g. `both`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`make`*, *`model`*, *`trim`*, *`start_year`*, *`end_year`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 50,
+          "maximum" : 100,
+          "minimum" : 0
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "minimum" : 0
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByHFTireModificationReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_tire/sw/" : {
+      "get" : {
+        "tags" : [ "Search By Metric Tire" ],
+        "summary" : "List section widths (mm)",
+        "description" : "\nReturns section width values\n",
+        "operationId" : "sectionWidths",
+        "parameters" : [ {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SectionWidthMetricReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_tire/ar/" : {
+      "get" : {
+        "tags" : [ "Search By Metric Tire" ],
+        "summary" : "List aspect ratios",
+        "description" : "Returns aspect ratio values",
+        "operationId" : "aspectRatio",
+        "parameters" : [ {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in mm.\nYou can use _**`GET /by_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `225`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/AspectRatioMetricReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_tire/rd/" : {
+      "get" : {
+        "tags" : [ "Search By Metric Tire" ],
+        "summary" : "List rim diameters",
+        "description" : "\nReturns rim diameter values\n",
+        "operationId" : "diameters",
+        "parameters" : [ {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in mm.\nYou can use _**`GET /by_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `225`)",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "aspect_ratio",
+          "in" : "query",
+          "description" : "The **`Aspect ratio`** is indicated on the tire sidewall as a percentage.\nIt's the height of the sidewall measured from wheel rim to top of the tread, expressed as a percentage of tire width.\nYou can use _**`GET /by_tire/ar`**_ to get a list of available *`value`* values. (e.g. `50`)",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`value`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/RimDiameterMetricReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_tire/search/" : {
+      "get" : {
+        "tags" : [ "Search By Metric Tire" ],
+        "summary" : "Search by Metric Tire",
+        "description" : "Returns a list of cars with the specified parameters.",
+        "operationId" : "searchByTire",
+        "parameters" : [ {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in mm.\nYou can use _**`GET /by_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `225`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 225.0
+        }, {
+          "name" : "aspect_ratio",
+          "in" : "query",
+          "description" : "The **`Aspect ratio`** is indicated on the tire sidewall as a percentage.\nIt's the height of the sidewall measured from wheel rim to top of the tread, expressed as a percentage of tire width.\nYou can use _**`GET /by_tire/ar`**_ to get a list of available *`value`* values. (e.g. `50`)",
+          "required" : true,
+          "type" : "integer",
+          "x-example" : 50
+        }, {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_tire/rd`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 19.0
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The **`Mode`** is used to set the search mode for data on the axes of wheelpairs.\nBy default, the search uses the axles of the front and rear wheelset.\n**`Mode`** possible values: __*`both`*__, __*`front_only`*__ or __*`rear_only`*__. (e.g. `both`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`make`*, *`model`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByMetricTireCarReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/by_tire/search/modifications/" : {
+      "get" : {
+        "tags" : [ "Search By Metric Tire" ],
+        "summary" : "Search by Metric Tire",
+        "description" : "Returns detailed information about vehicle modifications with specified rim parameters.",
+        "operationId" : "searchByTireModifications",
+        "parameters" : [ {
+          "name" : "make",
+          "in" : "query",
+          "description" : "A car's **`Make`** is the brand of the vehicle.\nYou can use _**`GET /makes/`**_ to get a list of available *`slug`* values. (e.g. `mitsubishi`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "mitsubishi"
+        }, {
+          "name" : "model",
+          "in" : "query",
+          "description" : "The particular **`Model`** of the brand.\nYou can use _**`GET /models/`**_ to get a list of available *`slug`* values. (e.g. `outlander`)",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "outlander"
+        }, {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in mm.\nYou can use _**`GET /by_tire/sw/`**_ to get a list of available *`value`* values. (e.g. `225`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 225.0
+        }, {
+          "name" : "aspect_ratio",
+          "in" : "query",
+          "description" : "The **`Aspect ratio`** is indicated on the tire sidewall as a percentage.\nIt's the height of the sidewall measured from wheel rim to top of the tread, expressed as a percentage of tire width.\nYou can use _**`GET /by_tire/ar/`**_ to get a list of available *`value`* values. (e.g. `50`)",
+          "required" : true,
+          "type" : "integer",
+          "x-example" : 50
+        }, {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\nYou can use _**`GET /by_tire/rd/`**_ to get a list of available *`value`* values. (e.g. `19`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 19.0
+        }, {
+          "name" : "region",
+          "in" : "query",
+          "description" : "A **`Region`** is the region where the car was officially sold or is still being sold.\nYou can use _**`GET /regions/`**_ to get a list of available *`slug`* values. (e.g. `usdm`)",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "usdm", "cdm", "mxndm", "ladm", "eudm", "russia", "jdm", "chdm", "skdm", "sam", "medm", "nadm", "sadm", "audm" ]
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The **`Mode`** is used to set the search mode for data on the axes of wheelpairs.\nBy default, the search uses the axles of the front and rear wheelset.\n**`Mode`** possible values: __*`both`*__, __*`front_only`*__ or __*`rear_only`*__. (e.g. `both`)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Comma-separated list without spaces. Supported field names: *`make`*, *`model`*, *`trim`*, *`start_year`*, *`end_year`*",
+          "required" : false,
+          "type" : "string",
+          "minLength" : 1
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 50,
+          "maximum" : 100,
+          "minimum" : 0
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "minimum" : 0
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/SearchByMetricTireModificationReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/regions/" : {
+      "get" : {
+        "tags" : [ "Service Methods" ],
+        "summary" : "Available regions",
+        "description" : "\nReturns all sales distribution regions.\nNote: the sales region is where the vehicle was officially sold or is still being sold.\n",
+        "operationId" : "regions",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : { },
+            "schema" : {
+              "$ref" : "#/definitions/RegionsReportOutput"
+            }
+          }
+        }
+      }
+    },
+    "/upsteps/" : {
+      "get" : {
+        "tags" : [ "Wheel Upsteps" ],
+        "summary" : "List rim and tire combinations",
+        "description" : "\nGet all possible rim and tire combinations based on pre-fitted original equipment (OE) wheel specs\nNote: we filter out unavailable options on the tire market from result.\n\n#### Parameters:\n   - OE rim (Ex.: 17 ⨯ 7J ET45)\n   - OE ISO Metric tire (Ex.: 225/55 R17)\n   - number of steps to calculate plus (0..3) or minus (-3..0), by default +2\n   - tire section width - relative difference (0..25%), by default 10%\n   - tire overall diameter - relative difference(0..15%), by default 5% \n\n#### Assumptions\n   - SAI, Steering-axis Inclination (kingpin inclination) angle is 18 degrees\n   - Camber Angle is 2 degrees with camber factor is 1 for all nominal aspect ratios\n\n#### Calculation\n   We iterate over rim diameters, according to *`steps`* parameter provided, and through all aspect ratio and section width combinations available on the market. \n   We calculate the tire dimensions difference between the OE  and the iteration item.\n   If the permissible tolerance stays within *`s_max`* (section width max) and *`do_max`* (overall diameter max), we calculate wheel rim that can be fitted with this tire.\n   For the calculated wheel rims, the offset value is selected in such a way that the scrub radius remains identical to that of the OE wheel rim.\n\n#### Materials used for calculation\n   - ISO 4000-1 (11 edition) Passenger car tyres and rims / Tyres (metric series)\n   - ISO 4000-2 (5 edition) Passenger car tyres and rims / Rims\n   - ISO 8855 (2 edition) Road vehicles / Vehicle dynamics and road-holding ability\n",
+        "operationId" : "getUpsteps",
+        "parameters" : [ {
+          "name" : "rim_diameter",
+          "in" : "query",
+          "description" : "Rim **`diameter`** is the distance measured in inches across the face of the wheel, from bead seat to bead seat.\n (e.g. `19`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 19.0
+        }, {
+          "name" : "rim_width",
+          "in" : "query",
+          "description" : "Rim **`width`** is the distance measured in inches from bead seat to bead seat.\n (e.g. `7.5`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 7.5
+        }, {
+          "name" : "rim_offset",
+          "in" : "query",
+          "description" : "Rim **`offset`** is a distance between wheel mounting surface where it is bolted to hub and the centerline of rim.\n (e.g. `38`)",
+          "required" : true,
+          "type" : "integer",
+          "x-example" : 38
+        }, {
+          "name" : "section_width",
+          "in" : "query",
+          "description" : "**`Section width`** is the width of the tire in mm.\n (e.g. `225`)",
+          "required" : true,
+          "type" : "number",
+          "x-example" : 225.0
+        }, {
+          "name" : "aspect_ratio",
+          "in" : "query",
+          "description" : "The **`Aspect ratio`** is indicated on the tire sidewall as a percentage.\nIt's the height of the sidewall measured from wheel rim to top of the tread, expressed as a percentage of tire width.\n (e.g. `50`)",
+          "required" : true,
+          "type" : "integer",
+          "x-example" : 50
+        }, {
+          "name" : "steps",
+          "in" : "query",
+          "description" : "How many *`steps`* for plus/minus rim diameters iterate",
+          "required" : false,
+          "type" : "integer",
+          "default" : 2,
+          "maximum" : 3,
+          "minimum" : -3
+        }, {
+          "name" : "s_max",
+          "in" : "query",
+          "description" : "Tire *`section width`* relative difference, % (e.g. `10`)",
+          "required" : false,
+          "type" : "integer",
+          "default" : 10,
+          "maximum" : 25,
+          "minimum" : 0
+        }, {
+          "name" : "do_max",
+          "in" : "query",
+          "description" : "Tire *`overall diameter`* relative difference, %  (e.g. `5`)",
+          "required" : false,
+          "type" : "integer",
+          "default" : 5,
+          "maximum" : 15,
+          "minimum" : 0
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A list of calculated rims and tires",
+            "examples" : {
+              "data" : [ {
+                "tire" : {
+                  "designation" : "145/70 R 13",
+                  "section_width" : 145,
+                  "aspect_ratio" : 70,
+                  "weight" : 14.74
+                },
+                "rim" : {
+                  "designation" : "13 ⨯ 4B",
+                  "diameter" : "13",
+                  "width" : "4",
+                  "offset" : 45,
+                  "backspacing" : 96,
+                  "weight" : 6.9
+                },
+                "is_oe" : true,
+                "difference" : {
+                  "s_relative" : 0,
+                  "s_absolute" : 0,
+                  "do_relative" : 0,
+                  "do_absolute" : 0
+                }
+              } ],
+              "meta" : {
+                "count" : 6,
+                "by_rim" : {
+                  "13 ⨯ 4B" : 2,
+                  "13 ⨯ 5B" : 2,
+                  "14 ⨯ 4.5J" : 1,
+                  "14 ⨯ 5J" : 1
+                }
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/UpstepsReportOutput"
+            }
+          },
+          "400" : {
+            "description" : "ValidationError"
+          }
+        }
+      }
+    },
+    "/tires/" : {
+      "get" : {
+        "tags" : [ "TiresVote.com API" ],
+        "summary" : "false",
+        "description" : "## Check out [TiresVote.com API Documentation](/v2/tires/swagger/)",
+        "operationId" : "tires",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          }
+        },
+        "deprecated" : false
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "user_key" : {
+      "description" : "Your access token. [Get your API key](https://developer.wheel-size.com/signup?plan_ids%5B%5D=2357355811171)",
+      "type" : "apiKey",
+      "name" : "user_key",
+      "in" : "query"
+    }
+  },
+  "definitions" : {
+    "MakesData" : {
+      "type" : "object",
+      "required" : [ "name", "name_en", "regions", "slug" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "format" : "slug",
+          "description" : "Manufacturer slug name (e.g. `mitsubishi`)",
+          "minLength" : 1,
+          "pattern" : "^[-a-zA-Z0-9_]+$"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Manufacturer name (e.g. `Mitsubishi`)",
+          "minLength" : 1
+        },
+        "name_en" : {
+          "type" : "string",
+          "description" : "Original english name.\nUse it along with _**`lang`**_ query parameter",
+          "minLength" : 1
+        },
+        "regions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "x-nullable" : true
+          }
+        },
+        "logo" : {
+          "type" : "string",
+          "format" : "uri",
+          "readOnly" : true
+        }
+      }
+    },
+    "MakesMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of makes"
+        }
+      }
+    },
+    "MakesReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MakesData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/MakesMeta"
+        }
+      }
+    },
+    "ModelsData" : {
+      "type" : "object",
+      "required" : [ "name", "name_en", "regions", "slug" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "format" : "slug",
+          "description" : "Model slug name (e.g. `outlander`)",
+          "minLength" : 1,
+          "pattern" : "^[-a-zA-Z0-9_]+$"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Model name (e.g. `Outlander`)",
+          "minLength" : 1
+        },
+        "name_en" : {
+          "type" : "string",
+          "description" : "Original english name.\nUse it along with _**`lang`**_ query parameter",
+          "minLength" : 1
+        },
+        "regions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "x-nullable" : true
+          }
+        },
+        "year_ranges" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "ModelsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of make (year) models"
+        }
+      }
+    },
+    "ModelsReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ModelsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/ModelsMeta"
+        }
+      }
+    },
+    "YearsData" : {
+      "type" : "object",
+      "required" : [ "name", "slug" ],
+      "properties" : {
+        "slug" : {
+          "type" : "integer",
+          "description" : "Same as *`name`*.\nAimed to match general for this API slug-name format"
+        },
+        "name" : {
+          "type" : "integer",
+          "description" : "Year (e.g. `2015`)"
+        }
+      }
+    },
+    "YearsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of make (model) years"
+        }
+      }
+    },
+    "YearsReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/YearsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/YearsMeta"
+        }
+      }
+    },
+    "Body" : {
+      "type" : "object",
+      "required" : [ "name" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "image" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "GenerationsData" : {
+      "type" : "object",
+      "required" : [ "bodies", "end", "name", "platform", "regions", "slug", "start" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "platform" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "start" : {
+          "type" : "integer"
+        },
+        "end" : {
+          "type" : "integer"
+        },
+        "bodies" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Body"
+          }
+        },
+        "regions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "x-nullable" : true
+          }
+        },
+        "years" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "year_ranges" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "GenerationsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of make model generations"
+        }
+      }
+    },
+    "GenerationsReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/GenerationsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/GenerationsMeta"
+        }
+      }
+    },
+    "Generation" : {
+      "type" : "object",
+      "required" : [ "bodies", "end", "name", "platform", "slug", "start" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "platform" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "start" : {
+          "type" : "integer"
+        },
+        "end" : {
+          "type" : "integer"
+        },
+        "bodies" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Body"
+          }
+        }
+      }
+    },
+    "Engine" : {
+      "type" : "object"
+    },
+    "ModificationsData" : {
+      "type" : "object",
+      "required" : [ "end_year", "engine", "generation", "slug", "start_year" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "trim_attributes" : {
+          "type" : "string",
+          "description" : "Trim attributes (e.g. `AWD`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "trim_body_types" : {
+          "type" : "string",
+          "description" : "Trim body types (e.g. `Convertible`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "trim_levels" : {
+          "type" : "string",
+          "description" : "Trim Levels (e.g. `EX-L, Touring, Executive`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "generation" : {
+          "$ref" : "#/definitions/Generation"
+        },
+        "start_year" : {
+          "type" : "integer"
+        },
+        "end_year" : {
+          "type" : "integer"
+        },
+        "engine" : {
+          "$ref" : "#/definitions/Engine"
+        },
+        "regions" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "ModificationsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of make model year modifications"
+        }
+      }
+    },
+    "ModificationsReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ModificationsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/ModificationsMeta"
+        }
+      }
+    },
+    "WheelFasteners" : {
+      "type" : "object"
+    },
+    "Technical" : {
+      "type" : "object",
+      "required" : [ "bolt_pattern", "centre_bore", "rear_axis_bolt_pattern", "wheel_fasteners" ],
+      "properties" : {
+        "wheel_fasteners" : {
+          "$ref" : "#/definitions/WheelFasteners"
+        },
+        "centre_bore" : {
+          "type" : "string",
+          "description" : "Centre bore diameter, mm (e.g. `64.1`, can be __*`N/A`*__)",
+          "minLength" : 1
+        },
+        "bolt_pattern" : {
+          "type" : "string",
+          "description" : "Bolt pattern (e.g. `5x105`, can be __*`N/A`*__)",
+          "minLength" : 1
+        },
+        "rear_axis_bolt_pattern" : {
+          "type" : "string",
+          "description" : "Bolt pattern (e.g. `5x105`, can be __*`N/A`*__)",
+          "minLength" : 1
+        }
+      }
+    },
+    "Wheel" : {
+      "type" : "object",
+      "required" : [ "rim", "tire", "tire_is_82series" ],
+      "properties" : {
+        "rim" : {
+          "type" : "string",
+          "description" : "Formatter rim size (e.g. `7Jx18 ET38`, can be __*`\"\"`*__)",
+          "minLength" : 1
+        },
+        "tire" : {
+          "type" : "string",
+          "description" : "Formatted tire size (e.g. `225/55R18`, can be __*`\"\"`*__)",
+          "minLength" : 1
+        },
+        "tire_is_82series" : {
+          "type" : "boolean",
+          "description" : "Is an old tire with assumed aspect ratio 82%"
+        }
+      }
+    },
+    "WheelPair" : {
+      "type" : "object",
+      "required" : [ "front", "is_pressed_steel_rims", "is_recommended_for_winter", "is_runflat_tires", "is_stock", "rear", "showing_fp_only" ],
+      "properties" : {
+        "is_stock" : {
+          "type" : "boolean",
+          "description" : "Original Equipment (OE)"
+        },
+        "showing_fp_only" : {
+          "type" : "boolean",
+          "description" : "Show front pair only"
+        },
+        "is_recommended_for_winter" : {
+          "type" : "boolean",
+          "description" : "Recommended for winter"
+        },
+        "is_runflat_tires" : {
+          "type" : "boolean",
+          "description" : "Runflat Tires"
+        },
+        "is_pressed_steel_rims" : {
+          "type" : "boolean",
+          "description" : "Pressed Steel Rims"
+        },
+        "front" : {
+          "$ref" : "#/definitions/Wheel"
+        },
+        "rear" : {
+          "$ref" : "#/definitions/Wheel"
+        }
+      }
+    },
+    "SearchByModelData" : {
+      "type" : "object",
+      "required" : [ "end_year", "engine", "generation", "slug", "start_year", "technical", "tire_type", "wheels" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "trim_attributes" : {
+          "type" : "string",
+          "description" : "Trim attributes (e.g. `AWD`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "trim_body_types" : {
+          "type" : "string",
+          "description" : "Trim body types (e.g. `Convertible`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "trim_levels" : {
+          "type" : "string",
+          "description" : "Trim Levels (e.g. `EX-L, Touring, Executive`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "generation" : {
+          "$ref" : "#/definitions/Generation"
+        },
+        "start_year" : {
+          "type" : "integer"
+        },
+        "end_year" : {
+          "type" : "integer"
+        },
+        "engine" : {
+          "$ref" : "#/definitions/Engine"
+        },
+        "regions" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "technical" : {
+          "$ref" : "#/definitions/Technical"
+        },
+        "tire_type" : {
+          "type" : "string",
+          "description" : "Tire type to mount on that car",
+          "minLength" : 1
+        },
+        "wheels" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WheelPair"
+          }
+        }
+      }
+    },
+    "SearchByModelMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "total rows"
+        },
+        "regions" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "SearchByModelReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchByModelData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchByModelMeta"
+        }
+      }
+    },
+    "FloatSearchParamsData" : {
+      "type" : "object",
+      "required" : [ "total", "value" ],
+      "properties" : {
+        "value" : {
+          "type" : "number",
+          "description" : "Value (e.g. `19.0`)"
+        },
+        "total" : {
+          "type" : "integer",
+          "description" : "Total"
+        }
+      }
+    },
+    "SearchParamsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "total values"
+        }
+      }
+    },
+    "DiameterReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "WidthReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "OffsetReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "CentreBoreReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "BoltPatternData" : {
+      "type" : "object",
+      "required" : [ "total", "value" ],
+      "properties" : {
+        "value" : {
+          "type" : "string",
+          "description" : "Value (e.g. `19.0`)",
+          "minLength" : 1
+        },
+        "total" : {
+          "type" : "integer",
+          "description" : "Total"
+        }
+      }
+    },
+    "BoltPatternReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BoltPatternData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "TireMake" : {
+      "type" : "object",
+      "required" : [ "name", "name_en", "slug" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "name_en" : {
+          "type" : "string",
+          "description" : "Original english name.\nUse it along with _**`lang`**_ query parameter",
+          "minLength" : 1
+        }
+      }
+    },
+    "SearchParamsCarsData" : {
+      "type" : "object",
+      "required" : [ "make", "name", "name_en", "regions", "slug" ],
+      "properties" : {
+        "make" : {
+          "$ref" : "#/definitions/TireMake"
+        },
+        "slug" : {
+          "type" : "string",
+          "format" : "slug",
+          "description" : "Model slug name (e.g. `outlander`)",
+          "minLength" : 1,
+          "pattern" : "^[-a-zA-Z0-9_]+$"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Model name (e.g. `Outlander`)",
+          "minLength" : 1
+        },
+        "name_en" : {
+          "type" : "string",
+          "description" : "Original english name.\nUse it along with _**`lang`**_ query parameter",
+          "minLength" : 1
+        },
+        "regions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "x-nullable" : true
+          }
+        },
+        "year_ranges" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "SearchParamsCarsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of make model year modifications"
+        }
+      }
+    },
+    "SearchByRimCarReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchParamsCarsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsCarsMeta"
+        }
+      }
+    },
+    "TireCar" : {
+      "type" : "object",
+      "required" : [ "make", "name", "name_en", "slug" ],
+      "properties" : {
+        "make" : {
+          "$ref" : "#/definitions/TireMake"
+        },
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "name_en" : {
+          "type" : "string",
+          "description" : "Original english name.\nUse it along with _**`lang`**_ query parameter",
+          "minLength" : 1
+        }
+      }
+    },
+    "SearchParamsModificationsData" : {
+      "type" : "object",
+      "required" : [ "end_year", "engine", "generation", "model", "slug", "start_year" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "trim_attributes" : {
+          "type" : "string",
+          "description" : "Trim attributes (e.g. `AWD`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "trim_body_types" : {
+          "type" : "string",
+          "description" : "Trim body types (e.g. `Convertible`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "trim_levels" : {
+          "type" : "string",
+          "description" : "Trim Levels (e.g. `EX-L, Touring, Executive`, can be __*`empty array`*__)",
+          "readOnly" : true
+        },
+        "model" : {
+          "$ref" : "#/definitions/TireCar"
+        },
+        "generation" : {
+          "$ref" : "#/definitions/Generation"
+        },
+        "start_year" : {
+          "type" : "integer"
+        },
+        "end_year" : {
+          "type" : "integer"
+        },
+        "engine" : {
+          "$ref" : "#/definitions/Engine"
+        },
+        "regions" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "SearchParamsModificationsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of make model year modifications"
+        }
+      }
+    },
+    "SearchByRimModificationReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchParamsModificationsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsModificationsMeta"
+        }
+      }
+    },
+    "IntegerSearchParamsData" : {
+      "type" : "object",
+      "required" : [ "total", "value" ],
+      "properties" : {
+        "value" : {
+          "type" : "integer",
+          "description" : "Value (e.g. `19.0`)"
+        },
+        "total" : {
+          "type" : "integer",
+          "description" : "Total"
+        }
+      }
+    },
+    "OverallDiameterReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/IntegerSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "SectionWidthReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "RimDiameterReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "SearchByHFTireCarReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchParamsCarsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsCarsMeta"
+        }
+      }
+    },
+    "SearchByHFTireModificationReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchParamsModificationsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsModificationsMeta"
+        }
+      }
+    },
+    "SectionWidthMetricReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/IntegerSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "AspectRatioMetricReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/IntegerSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "RimDiameterMetricReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FloatSearchParamsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsMeta"
+        }
+      }
+    },
+    "SearchByMetricTireCarReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchParamsCarsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsCarsMeta"
+        }
+      }
+    },
+    "SearchByMetricTireModificationReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SearchParamsModificationsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/SearchParamsModificationsMeta"
+        }
+      }
+    },
+    "RegionsData" : {
+      "type" : "object",
+      "required" : [ "abbr", "display", "slug" ],
+      "properties" : {
+        "slug" : {
+          "type" : "string",
+          "format" : "slug",
+          "minLength" : 1,
+          "pattern" : "^[-a-zA-Z0-9_]+$"
+        },
+        "display" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "abbr" : {
+          "type" : "string",
+          "minLength" : 1
+        },
+        "countries" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "RegionsMeta" : {
+      "type" : "object",
+      "required" : [ "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "RegionsReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RegionsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/RegionsMeta"
+        }
+      }
+    },
+    "Tire" : {
+      "type" : "object",
+      "required" : [ "aspect_ratio", "designation", "section_width", "weight" ],
+      "properties" : {
+        "designation" : {
+          "type" : "string",
+          "description" : "215/60 R 17",
+          "minLength" : 1
+        },
+        "section_width" : {
+          "type" : "integer",
+          "description" : "215"
+        },
+        "aspect_ratio" : {
+          "type" : "integer",
+          "description" : "60"
+        },
+        "weight" : {
+          "type" : "number",
+          "description" : "26.06"
+        }
+      }
+    },
+    "Rim" : {
+      "type" : "object",
+      "required" : [ "backspacing", "designation", "diameter", "offset", "weight", "width" ],
+      "properties" : {
+        "designation" : {
+          "type" : "string",
+          "description" : "17 ⨯ 6.5J",
+          "minLength" : 1
+        },
+        "diameter" : {
+          "type" : "number",
+          "description" : "17"
+        },
+        "width" : {
+          "type" : "number",
+          "description" : "6.6"
+        },
+        "offset" : {
+          "type" : "integer",
+          "description" : "43"
+        },
+        "backspacing" : {
+          "type" : "integer",
+          "description" : "126"
+        },
+        "weight" : {
+          "type" : "number",
+          "description" : "19.18"
+        }
+      }
+    },
+    "Difference" : {
+      "type" : "object",
+      "required" : [ "do_absolute", "do_relative", "s_absolute", "s_relative" ],
+      "properties" : {
+        "s_relative" : {
+          "type" : "number",
+          "description" : "-7.14"
+        },
+        "s_absolute" : {
+          "type" : "number",
+          "description" : "-17"
+        },
+        "do_relative" : {
+          "type" : "number",
+          "description" : "1.47"
+        },
+        "do_absolute" : {
+          "type" : "number",
+          "description" : "10"
+        }
+      }
+    },
+    "UpstepsData" : {
+      "type" : "object",
+      "required" : [ "difference", "is_oe", "rim", "tire" ],
+      "properties" : {
+        "tire" : {
+          "$ref" : "#/definitions/Tire"
+        },
+        "rim" : {
+          "$ref" : "#/definitions/Rim"
+        },
+        "is_oe" : {
+          "type" : "boolean",
+          "description" : "False"
+        },
+        "difference" : {
+          "$ref" : "#/definitions/Difference"
+        }
+      }
+    },
+    "UpstepsMeta" : {
+      "type" : "object",
+      "required" : [ "by_rim", "count" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "description" : "number of wheels"
+        },
+        "by_rim" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string",
+            "x-nullable" : true
+          }
+        }
+      }
+    },
+    "UpstepsReportOutput" : {
+      "type" : "object",
+      "required" : [ "data", "meta" ],
+      "properties" : {
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/UpstepsData"
+          }
+        },
+        "meta" : {
+          "$ref" : "#/definitions/UpstepsMeta"
+        }
+      }
+    }
+  }
+}
